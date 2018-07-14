@@ -1,0 +1,70 @@
+<section class="container" *ngIf="apareceTable">
+  <h4 class="center-align">Lista de usuarios</h4>
+  <div class="row">
+    <div class="col m4 s12">
+      <pagination-controls (pageChange)="p =$event"previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+    </div>
+    <div class="col m8 s12">
+      <form>
+        <div class="input-field col s12">
+          <i class="material-icons prefix">search</i>
+          <input type="text" class="form-control" name="term" [(ngModel)]="term">
+          <label for="icon_prefix">Buscar por nombre</label>
+        </div>
+      </form>
+    </div>
+    <ul class="collection col s12">
+      <li class="col s12 collection-item avatar separing" *ngFor="let user of users | filter:term | paginate: {itemsPerPage:4, currentPage: p}">
+        <img src="https://www.shareicon.net/data/2016/08/05/806962_user_512x512.png" alt="" class="circle">
+        <span class="title">{{user.firstName}}</span>
+        <p>{{user.lastName}}<br>
+           {{user.birthDate | date}}<br>
+           {{user.email}}<br>
+            {{ edad(user.birthDate) }}
+        </p>
+        <button class="btn waves-effect waves-light" type="submit" name="action" [routerLink]="['/product', user._id]">
+          <span *ngIf="user.products.length == 0">Agregar productos</span>
+          <span *ngIf="user.products.length > 0">Ver productos</span>
+          <i class="material-icons right">add_shopping_cart</i>
+        </button>
+        <div class="secondary-content actions">
+          <a href="#!" (click)="deleteUser(user._id)" class="a_delete"><i class="material-icons">delete</i></a>
+          <a href="#!" (click)="editUser(user)" class="a_update"><i class="material-icons">edit</i></a>
+        </div>
+      </li>
+    </ul>
+  </div>  
+</section>
+<section class="container" *ngIf="apareceForm">
+  <div class="row">
+    <h4 class="center-align">Agregando usuario</h4>
+    <form #heroForm="ngForm" class="col s12" (submit)="addUser(); heroForm.reset()" id="myForm">
+      <input type="hidden" name="_id" [(ngModel)]="_id">
+      <div class="row" [formGroup]="frmValid">
+        <div class="input-field col s12">
+          <input formControlName="namevalid" id="firstName" type="text" name="firstName" class="validate" [(ngModel)]="firstName">
+          <label for="firstName" [class]="act">Nombres</label>
+        </div>
+        <div class="input-field col s12">
+          <input formControlName="lastvalid" id="lastName" type="text" name="lastName" class="validate" [(ngModel)]="lastName">
+          <label for="lastName" [class]="act">Apellidos</label>
+        </div>
+        <div class="input-field col s12">
+          <input formControlName="datevalid" id="birthDate" type="date" name="birthDate" class="validate" [(ngModel)]="birthDate">
+        </div>
+        <div class="input-field col s12">
+          <input formControlName="emailvalid" type="email" name="email" id="email" class="validate" [(ngModel)]="email">
+          <label for="email" [class]="act">Correo electronico</label>
+        </div>
+        <div class="input-field col s12">
+          <input type="submit" value="Guardar" class="waves-effect waves-light btn" [disabled]="!frmValid.valid">
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+<div class="fixed-action-btn" >
+  <a class="btn-floating btn-large red tooltipped pulse" (click)="showAddUser();" data-position="top" data-tooltip="Agregar usuario">
+    <i class="large material-icons icon-app">{{icon}}</i>
+  </a>
+</div>

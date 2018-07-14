@@ -1,0 +1,72 @@
+<section class="container">
+  <div class="row">
+    <div *ngIf="apareceTable">
+      <h4 class="center-align">Lista de productos</h4>
+      <div *ngIf="products == 0; else listProducts">
+        <p class="error">No hay usuarios que mostrar</p>
+      </div>
+      <div class="col s12 m4" *ngFor="let product of products" #listProducts>
+        <div class="card">
+          <div class="card-image">
+            <img [src]="domain+product.photo">
+
+            <span class="card-title">{{product.name}}</span>
+            <a class="btn-floating halfway-fab waves-effect waves-light left-float a_update" (click)="editProduct(product)"><i class="material-icons">edit</i></a>
+            <a class="btn-floating halfway-fab waves-effect waves-light a_delete" (click)="removeProduct(product._id, product.photo);removeIdProduct(product._id)"><i class="material-icons">delete</i></a>
+          </div>
+          <div class="card-content">
+            <p>{{product.description | limit}}</p>
+          </div>
+          <div class="card-action">
+            <button data-target="modal1" class="link-card modal-trigger" (click)="popupUserInfo($event)">{{buyer}}</button>
+            <p>{{product.price}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="apareceForm">
+      <h4 class="center-align">Agregando producto</h4>
+      <input type="hidden" name="_id" [(ngModel)]="_id">
+      <input type="hidden" name="imh_hdn" [(ngModel)]="fileInput">
+      <form class="row" [formGroup]="frmRegistro" enctype="multipart/form-data">
+        <div class="input-field col s12">
+          <input formControlName="productvalid" id="nameProduct" type="text" name="nameProduct" class="validate" [(ngModel)]="nameProduct" >
+          <label for="nameProduct" [class]="act">Nombre del producto</label>
+        </div>
+        <div class="input-field col s12">
+          <input formControlName="pricevalid" id="precie" type="text" name="precie" class="validate" [(ngModel)]="precie">
+          <label for="precie" [class]="act">Precio</label>
+        </div>
+        <div class="input-field col s12">
+          <textarea formControlName="descriptionvalid" id="description" class="materialize-textarea" name="description" [(ngModel)]="description"></textarea>
+          <label for="description" [class]="act">Descripcion</label>
+        </div>
+        <div class="input-field col s12">
+          <input type="file" (change)="onCahngedFile($event)"  name="avatar">
+        </div>
+        <div class="input-field col s12">
+          <input type="submit" value="Guardar" class="waves-effect waves-light btn" (click)="saveProduct()" [disabled]="!frmRegistro.valid">
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large red tooltipped pulse" (click)="showAddProduct()" data-position="top" data-tooltip="Agregar producto">
+    <i class="large material-icons icon-app">{{icon}}</i>
+  </a>
+</div>
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+  <div class="modal-content">
+    <ul class="collection">
+      <li class="collection-item avatar">
+        <img src="https://materializecss.com/images/yuna.jpg" alt="" class="circle">
+        <span class="title">{{user.firstName}} {{user.lastName}}</span>
+        <p>{{user.email}}<br>
+           {{user.birthDate | date}}
+        </p>
+      </li>
+    </ul>
+  </div>
+</div>

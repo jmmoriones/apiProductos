@@ -1,0 +1,34 @@
+.error{
+  font-size: 2em;
+  color: #F44336;
+  text-align: center;
+  text-transform: uppercase;
+  background: #dadada73;
+  padding: .5em;
+  border-radius: 10px 0 10px 0;
+}
+.infoBuyer{
+  display: none;
+  position: fixed;
+  margin: 0 auto;
+  padding: 1em;
+  background: #0e0e0e66;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  transition: .5s all ease-out;
+}
+.showInfoBuyer{
+  transition: .5s all ease-in; 
+  display: block;
+}
+.link-card{
+  background: transparent;
+  padding: 0;
+  border: 0;
+  color: #F90;
+}
+.left-float{right: 75px;}
+.a_delete{background: #F44336;}
+.a_update{background: #8bc34a;}
