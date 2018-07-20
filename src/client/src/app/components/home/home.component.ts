@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../../model/interface/user';
 import { UsersService } from '../../model/services/users.service';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
+import * as io from 'socket.io-client';
 
 @Component({
   selector: 'kf-home',
@@ -21,6 +22,7 @@ export class HomeComponent implements OnInit {
   act: string
   search: string
   frmValid: any
+  socket: SocketIOClient.Socket
   constructor(private service: UsersService) {
     this.icon = "person_add"
     this.service.getUsers()
@@ -34,9 +36,20 @@ export class HomeComponent implements OnInit {
       datevalid: new FormControl("", Validators.required),
       emailvalid: new FormControl("", Validators.email)
     })
+    this.socket = io('http://localhost:3000')
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.socket.emit('message', {
+      msg: 'Client to server, can you hear me server?'
+    })
+    this.socket.on('server:user', (data) => {
+      console.log(data)
+    })
+    this.socket.on('receive:user', data => {
+      this.users.unshift(data)
+    })
+  }
   addUser(user?: User){
     this.showAddUser()
     const newUser: User = {
@@ -50,7 +63,7 @@ export class HomeComponent implements OnInit {
       this.service.newUser(newUser)
         .subscribe(data => {
           this.users.unshift(data)
-          console.log(data)
+          this.socket.emit('send:user', data)
         })
     }else{
       let users = this.users

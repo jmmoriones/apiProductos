@@ -1,10 +1,31 @@
 <nav class="grey lighten-4">
-  <div class="container">
-    <div class="nav-wrapper align-center">
-      <a href="#" class="brand-logo a_logo" [routerLink]="['/']">
+  <div class="container content-header">
+    <div>
+      <a href="#" class="a_logo" [routerLink]="['/']">
         <img src="http://kcumen.co/images/KcumenDigital-logo-web.png" alt="logo">
       </a>
     </div>
+    <div class="notification">
+      <a href="#" class="link-notification" (click)="linkNotification($event)">
+        <i class="material-icons icon-notification">notifications
+          <span class="space-notification" *ngIf="numbweNotification > 0">{{numbweNotification}}</span>
+        </i>
+      </a>
+      <div class="notice-notification">
+        <a class="btnNotification modal-trigger" *ngFor="let item of myNotifications" href="#modal1" (click)="showNotification(item)">{{item.firstName}} a sido agregado</a>
+      </div>
+    </div>
   </div>
 </nav>
+<div id="modal1" class="modal">
+  <div class="modal-content">
+    <ul class="collection col s12">
+      <li class="col s12 collection-item avatar separing">
+        <img class="circle" src="https://www.shareicon.net/data/2016/08/05/806962_user_512x512.png">
+        <span class="title">{{user.firstName}}</span>
+        <p>{{user.lastName}}<br>{{user.birthDate}}<br>{{user.email}}</p>
+      </li>
+    </ul>
+  </div>
+</div>
 <router-outlet></router-outlet>

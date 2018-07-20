@@ -6,9 +6,7 @@ const User = require('../model/user'),
 
 module.exports = {
   index: async (req, res, next) => {
-    let url = path.join(__dirname, '../../')
     const users =  await User.find().sort({_id: -1})
-    console.log(url)
     res.status(200).json(users)
   },
   getUser: async (req, res, next) => {
